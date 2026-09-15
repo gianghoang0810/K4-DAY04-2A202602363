@@ -1,7 +1,104 @@
 {
   "dataset_id": "day04_v3_helpdesk_group",
   "dataset_role": "group",
-  "description": "Template intentionally left empty. The team must write exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
+  "description": "Team-authored diagnostic evaluation: exactly five original single-turn cases and five original multi-turn cases covering routing, arguments, missing information, cancellation, confirmation validity, and the internal/external boundary.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_meeting_room_hardware", "phase": "B", "suite": "group",
+      "query": "Thiết bị phòng họp RM-501 bị mất tiếng từ một micro; kiểm tra riêng phần cứng của thiết bị này.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "inspect_device", "args": {"asset_id": "RM-501", "check": "hardware"}}]},
+      "metadata": {"skill": "meeting_room_asset_routing", "difficulty": "medium", "what_it_tests": "Thiết bị phòng họp có asset ID phải được inspect như một asset cụ thể, không phải shared service."}
+    },
+    {
+      "id": "G02_two_services_mixed_environments", "phase": "B", "suite": "group",
+      "query": "Kiểm tra SSO ở staging và Wi-Fi ở production; cần đủ cả hai kết quả.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [
+        {"name": "check_service_status", "args": {"service": "sso", "environment": "staging"}},
+        {"name": "check_service_status", "args": {"service": "wifi", "environment": "production"}}
+      ]},
+      "metadata": {"skill": "mixed_environment_parallel_status", "difficulty": "hard", "what_it_tests": "Gọi đủ hai status tool và không làm rò environment từ service này sang service kia."}
+    },
+    {
+      "id": "G03_named_employee_missing_id", "phase": "B", "suite": "group",
+      "query": "Tra cứu tài khoản và thiết bị được cấp của Linh Do giúp mình; mình chưa có mã nhân viên.",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"skill": "do_not_infer_employee_id", "difficulty": "medium", "what_it_tests": "Tên người không thay thế employee ID bắt buộc; agent phải hỏi lại thay vì suy đoán."}
+    },
+    {
+      "id": "G04_format_room_findings_only", "phase": "B", "suite": "group",
+      "query": "Đã có findings: RM-501 camera bình thường, micro bên phải mất kết nối. Chỉ format thành báo cáo brief tên 'RM-501 audio', không kiểm tra lại thiết bị.",
+      "failure_type": "unnecessary_tool",
+      "expect": {"tool_calls": [{"name": "format_incident_report", "args": {"template": "brief", "incident_title": "RM-501 audio"}}]},
+      "metadata": {"skill": "format_supplied_room_findings", "difficulty": "medium", "what_it_tests": "Chỉ format dữ liệu đã cung cấp; không gọi inspect_device hoặc search_kb thừa."}
+    },
+    {
+      "id": "G05_public_meeting_device_support", "phase": "B", "suite": "group",
+      "query": "Tìm trên web trang hỗ trợ chính hãng cho Logitech Rally Bar; chỉ dùng tên hãng và model công khai này.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "search_device_info", "args": {"manufacturer": "Logitech", "model": "Rally Bar", "query_type": "support"}}]},
+      "metadata": {"skill": "safe_public_device_search", "difficulty": "medium", "what_it_tests": "Public product lookup dùng external tool với dữ liệu công khai và không thêm internal identifier."}
+    },
+    {
+      "id": "G06_correct_service_and_environment", "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra SSO production."},
+        {"role": "user", "content": "Mình nói nhầm service, cần kiểm tra Wi-Fi."},
+        {"role": "user", "content": "Và môi trường đúng là staging; chỉ kiểm tra Wi-Fi staging."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "check_service_status", "args": {"service": "wifi", "environment": "staging"}}]},
+      "metadata": {"skill": "multiturn_full_status_correction", "difficulty": "hard", "what_it_tests": "Latest turns sửa cả service lẫn environment; không giữ SSO hoặc production cũ."}
+    },
+    {
+      "id": "G07_cancel_ticket_keep_inspection", "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Máy in PR-404 có cảnh báo; kiểm tra hardware giúp mình."},
+        {"role": "user", "content": "Nếu thấy lỗi thì chuẩn bị tạo ticket high."},
+        {"role": "user", "content": "Hủy ý định tạo ticket. Chỉ kiểm tra hardware của PR-404, không hỏi xác nhận và không tạo gì."}
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {"tool_calls": [{"name": "inspect_device", "args": {"asset_id": "PR-404", "check": "hardware"}}]},
+      "metadata": {"skill": "cancel_write_keep_read", "difficulty": "hard", "what_it_tests": "Hủy write action nhưng giữ read-only diagnostic trong latest intent."}
+    },
+    {
+      "id": "G08_target_change_requires_reconfirmation", "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Soạn ticket medium cho lỗi micro trên RM-501."},
+        {"role": "user", "content": "Payload RM-501 đó đúng, tôi xác nhận."},
+        {"role": "user", "content": "Khoan, đổi target sang PR-404 và priority high. Hãy cho xem lại payload mới và hỏi xác nhận lại trước khi tạo."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {"skill": "confirmation_bound_to_exact_payload", "difficulty": "hard", "what_it_tests": "Confirmation cho RM-501 medium hết hiệu lực khi target và priority đổi."}
+    },
+    {
+      "id": "G09_two_assets_corrected_check", "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra security của MB-012."},
+        {"role": "user", "content": "Thêm cả LT-411 vào danh sách."},
+        {"role": "user", "content": "Sửa lại: với cả hai thiết bị, chỉ kiểm tra software."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [
+        {"name": "inspect_device", "args": {"asset_id": "MB-012", "check": "software"}},
+        {"name": "inspect_device", "args": {"asset_id": "LT-411", "check": "software"}}
+      ]},
+      "metadata": {"skill": "multiturn_multi_asset_field_correction", "difficulty": "hard", "what_it_tests": "Áp dụng check mới nhất cho đủ hai asset, không giữ check security cũ."}
+    },
+    {
+      "id": "G10_replace_internal_with_public_search", "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra hardware máy LT-204."},
+        {"role": "user", "content": "Thôi không đọc dữ liệu nội bộ của máy nữa. Model công khai là Lenovo ThinkPad T14 Gen 4."},
+        {"role": "user", "content": "Chỉ tìm trang support chính hãng cho model đó trên web, không gửi LT-204 ra ngoài."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "search_device_info", "args": {"manufacturer": "Lenovo", "model": "ThinkPad T14 Gen 4", "query_type": "support"}}]},
+      "metadata": {"skill": "multiturn_internal_external_switch", "difficulty": "hard", "what_it_tests": "Latest intent thay internal inspection bằng sanitized public lookup; không gọi inspect_device cũ."}
+    }
+  ]
 }

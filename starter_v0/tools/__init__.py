@@ -14,6 +14,7 @@ from .lookup_user.tool import lookup_user
 from .policy.tool import search_company_policy
 from .search_kb.tool import search_kb
 from .search_device_info.tool import search_device_info
+from .detect_duplicate_ticket.tool import detect_duplicate_ticket
 
 
 # NOTE (starter_v0): these keys are the names the model sees AND the names
@@ -22,6 +23,7 @@ from .search_device_info.tool import search_device_info
 #   artifacts/tools.yaml  ->  this dict  ->  data/eval_base.json + data/eval_helpdesk_extension.json
 # Otherwise the eval raises "not declared in tools.yaml" or scores every call as a name mismatch.
 TOOL_FUNCTIONS = {
+    "detect_duplicate_ticket": detect_duplicate_ticket,
     "clarify": ask_user,
     "search_kb": search_kb,
     "search_device_info": search_device_info,

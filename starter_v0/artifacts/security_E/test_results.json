@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-15",
+  "command": "python -m unittest discover -s tests_E -v",
+  "tests_run": 15,
+  "passed": 12,
+  "known_security_gaps_expected_failure": 3,
+  "unexpected_failures": 0,
+  "unexpected_errors": 0,
+  "network": "Security HTTP tests mocked. Separate authorized live E smoke passed; see live_bonus_smoke.json.",
+  "files_sha256": {
+    "artifacts\\tools.yaml": "9ecc69120ec43c138c449be3eb235d2eef0a964184af3f5e4225112cd0bfa346",
+    "tools\\__init__.py": "4bc20de80dbb41e5b4432345bb85c8367b2e6649014a3973e3bcfbe534fd7cd3",
+    "artifacts\\system_prompt.md": "d825d4c0ecdd377966ccad9a4697ab5739b30c6efabe1da613a1123d574cbb46",
+    "artifacts\\system_prompt_v1.md": "831f31a6caa944c516f0a241777a2e26b9ae77b180e8079b5da3f5ea38bc270c",
+    "artifacts\\system_prompt_v2.md": "93308524f076a39e84084379801bec3607baa13342afb788b1ada883b99edb14",
+    "artifacts\\system_prompt_v3.md": "8d307021bb0561c5e92b1e79b8a463bb362c20a23c8c73fa0d4b74959574957b",
+    "tools\\detect_duplicate_ticket\\__init__.py": "92ebe5dec12fffbe8305e51cfc940613e2f03222e9b1357f90d6dc3f2ef67884",
+    "tools\\detect_duplicate_ticket\\tool.py": "b1fffe6139de46b0f20a9924a578ae38e80be299a73c70fc0aac0421fd950aa1",
+    "tests_E\\test_bonus_tool.py": "83fe9b88686d2406e69405e5360a6413c90e0a91164fb7948c246dbee59b7ebd",
+    "tests_E\\test_integration.py": "18f720e3ffa628d61007e182c74f7ede2c470c58d805e8a5b9d4f33ca480c38b",
+    "tests_E\\test_security_boundaries.py": "7d49f0fbdb96d14ace5023d3e13c1567554d7ac61328ec4993be349336830abf"
+  }
+}

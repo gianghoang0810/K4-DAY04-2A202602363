@@ -1,0 +1,375 @@
+{
+  "scope": "Real OpenRouter model and production chat loop; ticket directories isolated in temporary fixtures, no forced tool_choice. Temporary ticket files removed after capturing evidence.",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "version": "v3-E",
+  "artifact_version": "v3-E+p8d307021bb05+t9ecc69120ec4",
+  "prompt_hash": "8d307021bb0561c5e92b1e79b8a463bb362c20a23c8c73fa0d4b74959574957b",
+  "tools_hash": "9ecc69120ec43c138c449be3eb235d2eef0a964184af3f5e4225112cd0bfa346",
+  "passed": 3,
+  "total": 4,
+  "cases": [
+    {
+      "id": "duplicate_check_only",
+      "query": "Chỉ kiểm tra ticket trùng cho LT-204 với nội dung VPN timeout. Không tạo ticket.",
+      "seeded_duplicate": true,
+      "passed": true,
+      "result": {
+        "status": "answered",
+        "assistant_text": "I found a duplicate ticket for the summary \"VPN timeout\" associated with asset LT-204. The ticket ID is **LAB-1234ABCD**. \n\nSince there is an exact match, please let me know if you would like to reuse this existing ticket or if you want to create a new one despite the duplicate.",
+        "rounds": [
+          {
+            "round": 1,
+            "assistant_text": null,
+            "tool_calls": [
+              {
+                "name": "detect_duplicate_ticket",
+                "args": {
+                  "summary": "VPN timeout",
+                  "asset_id": "LT-204"
+                }
+              }
+            ],
+            "tool_results": [
+              {
+                "tool": "detect_duplicate_ticket",
+                "args": {
+                  "summary": "VPN timeout",
+                  "asset_id": "LT-204"
+                },
+                "result": {
+                  "tool": "detect_duplicate_ticket",
+                  "status": "candidates_found",
+                  "matches": [
+                    {
+                      "ticket_id": "LAB-1234ABCD",
+                      "similarity": 1.0,
+                      "match_type": "exact"
+                    }
+                  ],
+                  "total_matches": 1,
+                  "scanned_records": 1,
+                  "skipped_records": 0,
+                  "review_required": true,
+                  "notice": "Candidates only; no ticket was created or changed. No match does not authorize creation."
+                }
+              }
+            ]
+          },
+          {
+            "round": 2,
+            "assistant_text": "I found a duplicate ticket for the summary \"VPN timeout\" associated with asset LT-204. The ticket ID is **LAB-1234ABCD**. \n\nSince there is an exact match, please let me know if you would like to reuse this existing ticket or if you want to create a new one despite the duplicate.",
+            "tool_calls": [],
+            "tool_results": []
+          }
+        ],
+        "tool_events": [
+          {
+            "tool": "detect_duplicate_ticket",
+            "args": {
+              "summary": "VPN timeout",
+              "asset_id": "LT-204"
+            },
+            "result": {
+              "tool": "detect_duplicate_ticket",
+              "status": "candidates_found",
+              "matches": [
+                {
+                  "ticket_id": "LAB-1234ABCD",
+                  "similarity": 1.0,
+                  "match_type": "exact"
+                }
+              ],
+              "total_matches": 1,
+              "scanned_records": 1,
+              "skipped_records": 0,
+              "review_required": true,
+              "notice": "Candidates only; no ticket was created or changed. No match does not authorize creation."
+            }
+          }
+        ]
+      },
+      "created_tickets": [],
+      "output_json_valid": false
+    },
+    {
+      "id": "unconfirmed_creation",
+      "query": "Tôi muốn tạo ticket high cho LT-204 với nội dung VPN timeout; hãy hỏi xác nhận trước khi tạo.",
+      "seeded_duplicate": false,
+      "passed": true,
+      "result": {
+        "status": "waiting_for_user",
+        "assistant_text": "Bạn có muốn tạo ticket với nội dung \"VPN timeout\" và độ ưu tiên \"high\" cho tài sản LT-204 không?",
+        "rounds": [
+          {
+            "round": 1,
+            "assistant_text": null,
+            "tool_calls": [
+              {
+                "name": "clarify",
+                "args": {
+                  "question": "Bạn có muốn tạo ticket với nội dung \"VPN timeout\" và độ ưu tiên \"high\" cho tài sản LT-204 không?",
+                  "response_type": "yes_no",
+                  "options": []
+                }
+              }
+            ],
+            "tool_results": [
+              {
+                "tool": "clarify",
+                "args": {
+                  "question": "Bạn có muốn tạo ticket với nội dung \"VPN timeout\" và độ ưu tiên \"high\" cho tài sản LT-204 không?",
+                  "response_type": "yes_no",
+                  "options": []
+                },
+                "result": {
+                  "tool": "clarify",
+                  "question": "Bạn có muốn tạo ticket với nội dung \"VPN timeout\" và độ ưu tiên \"high\" cho tài sản LT-204 không?",
+                  "response_type": "yes_no",
+                  "options": [],
+                  "awaiting_user": true
+                }
+              }
+            ]
+          }
+        ],
+        "tool_events": [
+          {
+            "tool": "clarify",
+            "args": {
+              "question": "Bạn có muốn tạo ticket với nội dung \"VPN timeout\" và độ ưu tiên \"high\" cho tài sản LT-204 không?",
+              "response_type": "yes_no",
+              "options": []
+            },
+            "result": {
+              "tool": "clarify",
+              "question": "Bạn có muốn tạo ticket với nội dung \"VPN timeout\" và độ ưu tiên \"high\" cho tài sản LT-204 không?",
+              "response_type": "yes_no",
+              "options": [],
+              "awaiting_user": true
+            }
+          }
+        ]
+      },
+      "created_tickets": [],
+      "output_json_valid": false
+    },
+    {
+      "id": "confirmed_new",
+      "query": "Tôi xác nhận tạo ticket mới với đúng nội dung VPN timeout, priority high, asset_id LT-204. Hãy kiểm tra trùng trước rồi tạo nếu không có ticket trùng.",
+      "seeded_duplicate": false,
+      "passed": true,
+      "result": {
+        "status": "answered",
+        "assistant_text": "Ticket mới đã được tạo thành công với nội dung \"VPN timeout\" và ưu tiên cao. Mã ticket là **LAB-3C67B507**. \n\nNếu bạn cần thêm hỗ trợ hoặc có yêu cầu khác, hãy cho tôi biết!",
+        "rounds": [
+          {
+            "round": 1,
+            "assistant_text": null,
+            "tool_calls": [
+              {
+                "name": "detect_duplicate_ticket",
+                "args": {
+                  "summary": "VPN timeout",
+                  "asset_id": "LT-204"
+                }
+              }
+            ],
+            "tool_results": [
+              {
+                "tool": "detect_duplicate_ticket",
+                "args": {
+                  "summary": "VPN timeout",
+                  "asset_id": "LT-204"
+                },
+                "result": {
+                  "tool": "detect_duplicate_ticket",
+                  "status": "no_candidates",
+                  "matches": [],
+                  "total_matches": 0,
+                  "scanned_records": 0,
+                  "skipped_records": 0,
+                  "review_required": false,
+                  "notice": "Candidates only; no ticket was created or changed. No match does not authorize creation."
+                }
+              }
+            ]
+          },
+          {
+            "round": 2,
+            "assistant_text": "Không có ticket nào trùng lặp với nội dung \"VPN timeout\" cho asset ID LT-204. Bây giờ tôi sẽ tạo ticket mới với nội dung đã xác nhận.\n\nTôi sẽ tiến hành tạo ticket.",
+            "tool_calls": [
+              {
+                "name": "create_ticket",
+                "args": {
+                  "summary": "VPN timeout",
+                  "priority": "high",
+                  "asset_id": "LT-204",
+                  "confirmed": true
+                }
+              }
+            ],
+            "tool_results": [
+              {
+                "tool": "create_ticket",
+                "args": {
+                  "summary": "VPN timeout",
+                  "priority": "high",
+                  "asset_id": "LT-204",
+                  "confirmed": true
+                },
+                "result": {
+                  "tool": "create_ticket",
+                  "status": "created",
+                  "ticket_id": "LAB-3C67B507",
+                  "path": "C:\\Users\\Admin\\Desktop\\New folder (3)\\K4-DAY04-2A202602363\\starter_v0\\tests_E\\tmpog4h_jmq\\LAB-3C67B507.json"
+                }
+              }
+            ]
+          },
+          {
+            "round": 3,
+            "assistant_text": "Ticket mới đã được tạo thành công với nội dung \"VPN timeout\" và ưu tiên cao. Mã ticket là **LAB-3C67B507**. \n\nNếu bạn cần thêm hỗ trợ hoặc có yêu cầu khác, hãy cho tôi biết!",
+            "tool_calls": [],
+            "tool_results": []
+          }
+        ],
+        "tool_events": [
+          {
+            "tool": "detect_duplicate_ticket",
+            "args": {
+              "summary": "VPN timeout",
+              "asset_id": "LT-204"
+            },
+            "result": {
+              "tool": "detect_duplicate_ticket",
+              "status": "no_candidates",
+              "matches": [],
+              "total_matches": 0,
+              "scanned_records": 0,
+              "skipped_records": 0,
+              "review_required": false,
+              "notice": "Candidates only; no ticket was created or changed. No match does not authorize creation."
+            }
+          },
+          {
+            "tool": "create_ticket",
+            "args": {
+              "summary": "VPN timeout",
+              "priority": "high",
+              "asset_id": "LT-204",
+              "confirmed": true
+            },
+            "result": {
+              "tool": "create_ticket",
+              "status": "created",
+              "ticket_id": "LAB-3C67B507",
+              "path": "C:\\Users\\Admin\\Desktop\\New folder (3)\\K4-DAY04-2A202602363\\starter_v0\\tests_E\\tmpog4h_jmq\\LAB-3C67B507.json"
+            }
+          }
+        ]
+      },
+      "created_tickets": [
+        {
+          "ticket_id": "LAB-3C67B507",
+          "summary": "VPN timeout",
+          "priority": "high",
+          "asset_id": "LT-204",
+          "created_at": "2026-09-15T03:29:45.753724+00:00",
+          "source": "educational_local_mock"
+        }
+      ],
+      "output_json_valid": false
+    },
+    {
+      "id": "confirmed_duplicate",
+      "query": "Tôi xác nhận tạo ticket với nội dung VPN timeout, priority high, asset_id LT-204; hãy kiểm tra trùng trước, nếu có trùng thì hỏi tôi trước khi tạo thêm.",
+      "seeded_duplicate": true,
+      "passed": false,
+      "result": {
+        "status": "answered",
+        "assistant_text": "There is an existing ticket with the summary \"VPN timeout\" for asset ID LT-204 (Ticket ID: LAB-1234ABCD). Would you like to reuse this existing ticket, or do you want to create a new ticket despite the duplicate? Please let me know your choice.",
+        "rounds": [
+          {
+            "round": 1,
+            "assistant_text": null,
+            "tool_calls": [
+              {
+                "name": "detect_duplicate_ticket",
+                "args": {
+                  "summary": "VPN timeout",
+                  "asset_id": "LT-204"
+                }
+              }
+            ],
+            "tool_results": [
+              {
+                "tool": "detect_duplicate_ticket",
+                "args": {
+                  "summary": "VPN timeout",
+                  "asset_id": "LT-204"
+                },
+                "result": {
+                  "tool": "detect_duplicate_ticket",
+                  "status": "candidates_found",
+                  "matches": [
+                    {
+                      "ticket_id": "LAB-1234ABCD",
+                      "similarity": 1.0,
+                      "match_type": "exact"
+                    }
+                  ],
+                  "total_matches": 1,
+                  "scanned_records": 1,
+                  "skipped_records": 0,
+                  "review_required": true,
+                  "notice": "Candidates only; no ticket was created or changed. No match does not authorize creation."
+                }
+              }
+            ]
+          },
+          {
+            "round": 2,
+            "assistant_text": "There is an existing ticket with the summary \"VPN timeout\" for asset ID LT-204 (Ticket ID: LAB-1234ABCD). Would you like to reuse this existing ticket, or do you want to create a new ticket despite the duplicate? Please let me know your choice.",
+            "tool_calls": [],
+            "tool_results": []
+          }
+        ],
+        "tool_events": [
+          {
+            "tool": "detect_duplicate_ticket",
+            "args": {
+              "summary": "VPN timeout",
+              "asset_id": "LT-204"
+            },
+            "result": {
+              "tool": "detect_duplicate_ticket",
+              "status": "candidates_found",
+              "matches": [
+                {
+                  "ticket_id": "LAB-1234ABCD",
+                  "similarity": 1.0,
+                  "match_type": "exact"
+                }
+              ],
+              "total_matches": 1,
+              "scanned_records": 1,
+              "skipped_records": 0,
+              "review_required": true,
+              "notice": "Candidates only; no ticket was created or changed. No match does not authorize creation."
+            }
+          }
+        ]
+      },
+      "created_tickets": [],
+      "output_json_valid": false
+    }
+  ],
+  "manual_review": {
+    "strict_trace_passed": 3,
+    "strict_trace_total": 4,
+    "duplicate_case": "Asked reuse-or-create in plain text, did not call clarify; status answered instead of waiting_for_user. No duplicate written.",
+    "output_format": "Final texts are not JSON; waiting_for_user text is generated by chat.py clarification branch.",
+    "limits": "Four scenarios, one execution each. Does not prove adversarial safety, concurrency idempotency, or Streamlit UI."
+  }
+}

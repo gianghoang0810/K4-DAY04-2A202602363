@@ -1,0 +1,32 @@
+{
+  "scope": "Live read-only bonus routing; only duplicate tool allowed to execute by audit harness",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "version": "v3-E",
+  "artifact_version": "v3-E+p8d307021bb05+t9ecc69120ec4",
+  "prompt_hash": "8d307021bb0561c5e92b1e79b8a463bb362c20a23c8c73fa0d4b74959574957b",
+  "tools_hash": "9ecc69120ec43c138c449be3eb235d2eef0a964184af3f5e4225112cd0bfa346",
+  "query": "Chỉ kiểm tra ticket trùng cho LT-204 với nội dung VPN timeout. Không tạo ticket.",
+  "calls": [
+    {
+      "name": "detect_duplicate_ticket",
+      "args": {
+        "summary": "VPN timeout",
+        "asset_id": "LT-204"
+      }
+    }
+  ],
+  "results": [
+    {
+      "tool": "detect_duplicate_ticket",
+      "status": "no_candidates",
+      "matches": [],
+      "total_matches": 0,
+      "scanned_records": 3,
+      "skipped_records": 0,
+      "review_required": false,
+      "notice": "Candidates only; no ticket was created or changed. No match does not authorize creation."
+    }
+  ],
+  "passed": true
+}
